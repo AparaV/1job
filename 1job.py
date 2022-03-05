@@ -10,6 +10,8 @@ import argparse
 import subprocess
 import pandas as pd
 
+from copy import deepcopy as copy
+
 params_pattern = r"\$\$[A-Z]+(_[A-Z]+)*\$\$"
 params_re = re.compile(params_pattern)
 
@@ -119,8 +121,8 @@ def create_sbatch_scripts(template, parameter_set, params_df, outdir):
 
     params_dict_list = params_df.to_dict("records")
     for params_dict in params_dict_list:
-        sbatch_lines = get_sbatch_file_contents(template, params_dict, parameter_set)
-        
+        sbatch_lines = get_sbatch_file_contents(copy(template), params_dict, parameter_set)
+
         fname = "temp_" + str(counter).zfill(5) + ".sbatch"
         fname = os.path.join(outdir, fname)
         write_file(sbatch_lines, fname)
@@ -160,5 +162,5 @@ if __name__ == "__main__":
 
     file_indices = create_sbatch_scripts(template, parameter_set, params_df, output_dir)
 
-    schedule_jobs(output_dir, file_indices[0], file_indices[1])
+    # schedule_jobs(output_dir, file_indices[0], file_indices[1])
 
