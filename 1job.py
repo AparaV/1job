@@ -162,5 +162,5 @@ if __name__ == "__main__":
 
     file_indices = create_sbatch_scripts(template, parameter_set, params_df, output_dir)
 
-    # schedule_jobs(output_dir, file_indices[0], file_indices[1])
+    schedule_jobs(output_dir, file_indices[0], file_indices[1])
 
